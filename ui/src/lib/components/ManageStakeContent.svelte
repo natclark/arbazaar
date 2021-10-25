@@ -43,7 +43,7 @@
         if (balance >= amountAdd) {
             if (amountAdd >= 1000) {
                 const contractFarm = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
-                const wei = $web3.utils.toWei(amountAdd, `ether`);
+                const wei = $web3.utils.toWei(amountAdd.toString(), `ether`);
                 contractFarm.methods.addStake(wei).send({
                     from: $selectedAccount,
                 }).once(`error`, () => {
@@ -68,13 +68,13 @@
 
     const removeStake = async () => {
         try {
-            amountRemove = parseFloat(toNumber());
+            amountRemove = parseFloat(amountRemove);
         } catch (e) {
             Swal.fire(`You must enter a number!`);
         }
         if (stake >= amountRemove) {
             const contractFarm = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
-            const wei = $web3.utils.toWei(amountRemove, `ether`);
+            const wei = $web3.utils.toWei(amountRemove.toString(), `ether`);
             contractFarm.methods.removeStake(wei).send({
                 from: $selectedAccount,
             }).once(`error`, () => {
