@@ -36,7 +36,7 @@
 
     const addStake = async () => {
         try {
-            amountAdd = amountAdd.toNumber();
+            amountAdd = parseFloat(amountAdd);
         } catch (e) {
             Swal.fire(`You must enter a number!`);
         }
