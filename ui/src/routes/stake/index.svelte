@@ -157,7 +157,7 @@
     </div>
     <div class="flex__text">
         <h2>What if this website shuts down? How would I withdraw my BUCK and claim my rewards?</h2>
-        <p>One was is to download the source code of this website, run it on your own computer, and unstake your tokens using this same portal locally.</p>
+        <p>One way is to download the source code of this website, run it on your own computer, and unstake your tokens using this same portal locally.</p>
         <p>However, you can always interact with the contract directly to claim your rewards manually.</p>
     </div>
 </div>
