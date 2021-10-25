@@ -84,7 +84,7 @@
     <p class="value">
         <img class="buck" src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xAFD871f684F21Ab9D7137608C71808f83D75e6fc/logo.png" alt="BUCK" loading="lazy">
         <span class="value__number">
-            {total}
+            {new Intl.NumberFormat(`en-US`).format(total)}
         </span>
     </p>
 </div>
@@ -95,7 +95,7 @@
         <p class="value">
             <img class="buck" src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xAFD871f684F21Ab9D7137608C71808f83D75e6fc/logo.png" alt="BUCK" loading="lazy">
             <span class="value__number">
-                {stake}
+                {new Intl.NumberFormat(`en-US`).format(stake)}
             </span>
         </p>
     </div>
