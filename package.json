@@ -1,0 +1,27 @@
+{
+    "name": "arbazaar",
+    "version": "0.0.0",
+    "author": "Nathan Clark",
+    "license": "GPL-3.0",
+    "description": "Arbitrum-native NFT marketplace.",
+    "private": "true",
+    "scripts": {
+        "preinstall": "npx only-allow pnpm",
+        "contracts:build": "cd protocol && npx hardhat compile",
+        "contracts:dev": "cd protocol && npx hardhat node",
+        "contracts:mainnet": "cd protocol && npx hardhat --network mainnet deploy",
+        "contracts:kovan": "cd protocol && npx hardhat --network kovan deploy",
+        "contracts:arbitrum": "cd protocol && npx hardhat --network arbitrum deploy",
+        "ui:build": "cd ui && pnpm run prepare && npx svelte-kit build",
+        "ui:dev": "cd ui && npx svelte-kit dev",
+        "ui:preview": "cd ui && npx svelte-kit preview"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/natclark/arbazaar.git"
+    },
+    "bugs": {
+        "url": "https://github.com/natclark/arbazaar/issues"
+    },
+    "homepage": "https://github.com/natclark/arbazaar#readme"
+}

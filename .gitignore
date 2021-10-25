@@ -1,0 +1,16 @@
+.svelte-kit
+abi
+!ui/src/lib/abi
+artifacts
+build
+cache
+coverage
+exports
+node_modules
+types
+
+.DS_Store
+.env
+coverage.json
+package-lock.json
+pnpm-lock.yaml

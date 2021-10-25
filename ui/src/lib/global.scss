@@ -1,0 +1,245 @@
+@charset 'UTF-8';
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition-duration: 0s !important;
+    }
+}
+
+@font-face {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Rubik'), url('/fonts/rubik-regular.woff2') format('woff2');
+}
+
+@font-face {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Rubik'), url('/fonts/rubik-medium.woff2') format('woff2');
+}
+
+@font-face {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Rubik'), url('/fonts/rubik-italic.woff2') format('woff2');
+}
+
+@font-face {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-display: swap;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Rubik'), url('/fonts/rubik-bold.woff2') format('woff2');
+}
+
+@keyframes ripple {
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+:root {
+    --fg: #fff;
+    //--bg: #0a0a1e;
+    --bg: hsl(210deg, 15%, 6%);
+    --bg-soft: #232337;
+    --bg-hover: #323246;
+    --ac: #007dde;
+    --ac-alt: #1950e6;
+    --ac-light: #0091ff;
+    --ac-dark: #828282;
+    --ac-btn: #00b487;
+    --ac-red: #ff7b84;
+    --gr: linear-gradient(to right, var(--ac-alt), var(--ac));
+    --bg-scroll: var(--bg-soft);
+    --fg-fill: var(--fg);
+    --fg-scroll: var(--ac);
+    --gr-scroll: linear-gradient(var(--ac), var(--ac-alt));
+    --font: 'Rubik', Roboto, 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-track {
+    background-image: var(--bg-scroll);
+    border-radius: 24px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-image: var(--gr-scroll);
+    border-radius: 24px;
+}
+
+html {
+    background-color: var(--bg);
+    overflow: hidden scroll;
+    scrollbar-color: var(--fg-scroll) var(--bg-scroll);
+    scrollbar-width: thin;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    height: 100%;
+    margin: 0;
+    min-height: calc(100vh - 70px);
+    overflow: hidden;
+    scrollbar-face-color: var(--fg-scroll);
+    scrollbar-track-color: var(--bg-scroll);
+    text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--fg);
+    font-weight: 700;
+    text-align: center;
+    > a {
+        color: var(--ac) !important;
+        &:hover {
+            color: var(--ac-alt) !important;
+        }
+    }
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    h1 {
+        font-size: 48px;
+    }
+}
+
+.subtitle {
+    color: #eee;
+    font-size: 20px;
+    margin: 0 auto;
+    margin-bottom: 18px;
+    max-width: 700px;
+    text-align: center;
+}
+
+a {
+    color: var(--ac-light);
+    text-decoration: none;
+    &:hover {
+        opacity: .9;
+        text-decoration: underline;
+    }
+    &:visited {
+        color: var(--ac-light);
+    }
+}
+
+.primary {
+    -webkit-user-select: none;
+    align-items: center;
+    background-color: var(--ac-alt);
+    border: 0;
+    border-radius: 24px;
+    color: var(--fg) !important;
+    cursor: pointer;
+    display: flex;
+    font-size: 22px;
+    font-weight: 600;
+    height: 50px;
+    justify-content: center;
+    max-width: 300px;
+    opacity: 1 !important;
+    overflow: hidden;
+    padding: 0 8px;
+    position: relative;
+    user-select: none;
+    touch-action: manipulation;
+    transition: filter .15s;
+    width: 100%;
+    &:hover {
+        filter: brightness(110%) !important;
+        text-decoration: none;
+    }
+    &:focus:not(:focus-visible) {
+        outline: none;
+    }
+}
+
+.secondary {
+    -webkit-user-select: none;
+    align-items: center;
+    background-image: var(--gr);
+    border: 0;
+    border-radius: 24px;
+    color: var(--fg) !important;
+    cursor: pointer;
+    display: flex;
+    overflow: hidden;
+    padding: 0 16px;
+    position: relative;
+    user-select: none;
+    touch-action: manipulation;
+    transition: filter .15s;
+    &:hover {
+        filter: brightness(110%);
+        text-decoration: none;
+    }
+    &:focus:not(:focus-visible) {
+        outline: none;
+    }
+}
+
+.window-wrap .window {
+    background-color: var(--bg-soft) !important;
+    color: var(--fg) !important;
+}
+
+span.ripple {
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 50%;
+    height: 0;
+    opacity: 1;
+    position: absolute;
+    transform: scale(0);
+    width: 0;
+    will-change: opacity, transform;
+}
+
+.ripple {
+    animation: ripple .3s linear;
+}
+
+.eth {
+    height: 16px;
+    &.eth--small {
+        height: 12px;
+    }
+    &.eth--large {
+        height: 48px;
+    }
+}
