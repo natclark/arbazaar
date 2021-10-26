@@ -3,14 +3,18 @@
     import Swal from 'sweetalert2';
     import Modal from 'svelte-simple-modal';
     import ManageStakeButton from '$lib/components/ManageStakeButton.svelte';
+    import EarningsCalculator from '$lib/components/EarningsCalculator.svelte';
     import { onMount } from 'svelte';
     import MockBUCK from '$lib/abi/MockBUCK.json';
     import Arbazaar from '$lib/abi/Arbazaar.json';
     import { addressMockBUCK, addressArbazaar } from '../../../config';
 
+    let tvl = 0;
     let total = 0;
+    let fees = 0;
     let balance = 0;
     let stake = 0;
+    let share = 0;
     let rewards = 0;
 
     let claiming = false;
@@ -48,13 +52,24 @@
     };
 
     const refresh = async () => {
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             const contractFarm = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
             const dataTotal = await contractFarm.methods.getStakeTotal().call();
             total = $web3.utils.fromWei(dataTotal, `ether`);
 
+            const dataTvl = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=arbucks&vs_currencies=usd`);
+            const jsonTvl = await dataTvl.json();
+            try {
+                tvl = total * jsonTvl.arbucks.usd;
+            } catch (e) {}
+
+            const dataFees = await contractFarm.methods.getRewardsTotal().call();
+            fees = $web3.utils.fromWei(dataFees, `ether`);
+
             const dataStake = await contractFarm.methods.getStakeByUser($selectedAccount).call();
             stake = $web3.utils.fromWei(dataStake, `ether`);
+
+            share = (stake / total) * 100;
 
             const dataRewards = await contractFarm.methods.getUnclaimedRewardsByUser($selectedAccount).call();
             rewards = $web3.utils.fromWei(dataRewards, `ether`);
@@ -62,6 +77,23 @@
             const contractToken = await new $web3.eth.Contract(MockBUCK.abi, addressMockBUCK);
             const dataBalance = await contractToken.methods.balanceOf($selectedAccount).call();
             balance = $web3.utils.fromWei(dataBalance, `ether`);
+        } else {
+            await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
+
+            const contractFarm = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
+            const dataTotal = await contractFarm.methods.getStakeTotal().call();
+            total = $web3.utils.fromWei(dataTotal, `ether`);
+
+            const dataTvl = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=arbucks&vs_currencies=usd`);
+            const jsonTvl = await dataTvl.json();
+            try {
+                tvl = total * jsonTvl.arbucks.usd;
+            } catch (e) { }
+
+            const dataFees = await contractFarm.methods.getRewardsTotal().call();
+            fees = $web3.utils.fromWei(dataFees, `ether`);
+
+            share = (stake / total) * 100;
         }
     };
 
@@ -69,7 +101,7 @@
         refresh();
     });
 
-    $: $connected, typeof document !== `undefined` && (refresh());
+    $: $selectedAccount, typeof document !== `undefined` && (refresh());
 </script>
 
 <svelte:head>
@@ -79,14 +111,34 @@
 <h1>Stake BUCK. Farm ETH.</h1>
 <p class="subtitle">No inflation, impermanent loss, or "ponzinomics".</p>
 
-<div class="card">
-    <h2>Total BUCK Staked</h2>
-    <p class="value">
-        <img class="buck" src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xAFD871f684F21Ab9D7137608C71808f83D75e6fc/logo.png" alt="BUCK" loading="lazy">
-        <span class="value__number">
-            {new Intl.NumberFormat(`en-US`).format(total)}
-        </span>
-    </p>
+<div class="flex flex--center">
+    <div class="card">
+        <h2>TVL (USDT)</h2>
+        <p class="value">
+            <img class="usdt" src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9/logo.png" alt="USDT" loading="lazy">
+            <span class="value__number">
+                {new Intl.NumberFormat(`en-US`, { currency: `USD`, style: `currency`, }).format(tvl)}
+            </span>
+        </p>
+    </div>
+    <div class="card">
+        <h2>Total BUCK Staked</h2>
+        <p class="value">
+            <img class="buck" src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xAFD871f684F21Ab9D7137608C71808f83D75e6fc/logo.png" alt="BUCK" loading="lazy">
+            <span class="value__number">
+                {new Intl.NumberFormat(`en-US`).format(total)}
+            </span>
+        </p>
+    </div>
+    <div class="card">
+        <h2>All-Time Rewards</h2>
+        <p class="value">
+            <img class="eth" src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x82aF49447D8a07e3bd95BD0d56f35241523fBab1/logo.png" alt="ETH" loading="lazy">
+            <span class="value__number">
+                {fees}
+            </span>
+        </p>
+    </div>
 </div>
 
 <div class="flex">
@@ -98,6 +150,7 @@
                 {new Intl.NumberFormat(`en-US`).format(stake)}
             </span>
         </p>
+        <p class="text-center">My share of the pool: <strong>{new Intl.NumberFormat(`en-US`).format(share)}%</strong></p>
     </div>
     <div class="flex__card">
         <h2>My Rewards</h2>
@@ -107,11 +160,12 @@
                 {rewards}
             </span>
         </p>
+        <p class="text-center">My lifetime rewards: <strong>{rewards} ETH</strong></p>
     </div>
 </div>
 
 <div class="flex">
-    {#if !!$connected}
+    {#if $selectedAccount !== null}
         <div class="flex__button">
             <Modal>
                 <ManageStakeButton />
@@ -132,6 +186,13 @@
         </div>
     {/if}
 </div>
+
+<h2>Earnings Estimator</h2>
+
+<p>This interactive tool estimates the monthly ETH rewards for a given marketplace volume and BUCK stake.</p>
+<p>Please note that this is an <em>estimate</em> and actual rewards are solely dependent on actual marketplace volume.</p>
+
+<EarningsCalculator {total} />
 
 <div class="flex">
     <div class="flex__text">
@@ -188,12 +249,18 @@
             }
         }
     }
+    .card {
+        width: 100%;
+    }
+    .text-center {
+        text-align: center !important;
+    }
     .value {
         align-items: center;
         display: flex;
         justify-content: center;
         .value__number {
-            font-size: 48px;
+            font-size: 32px;
             font-weight: 500;
         }
         img {
@@ -209,7 +276,12 @@
     @media screen and (min-width: 768px) {
         .flex {
             flex-direction: row;
-            column-gap: 16px;
+            column-gap: 64px;
+        }
+    }
+    @media screen and (min-width: 1024px) {
+        .value__number {
+            font-size: 48px !important;
         }
     }
 </style>
