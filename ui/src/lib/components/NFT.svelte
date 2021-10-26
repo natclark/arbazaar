@@ -31,7 +31,11 @@
                 image = data.external_data.image;
                 if (typeof image === `string`) {
                     if (image.includes(`http`) === false) {
-                        image = `https://cloudflare-ipfs.com/ipfs/${image}`;
+                        if (!!image.endsWith(`.mp4`)) {
+                            image = `https://gateway.ipfs.io/ipfs/${image}`;
+                        } else {
+                            image = `https://cloudflare-ipfs.com/ipfs/${image}`;
+                        }
                     }
                 } else {
                     // TODO
