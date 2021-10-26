@@ -207,6 +207,10 @@
             {/if}
         </button>
     </form>
+    <p>
+        <br>
+        <strong>WARNING: This process will improve in the future, but be prepared to pay gas for 2-3 transactions, back-to-back. We do not charge additional minting fees.</strong>
+    </p>
 {/if}
 
 <!--
