@@ -13,7 +13,7 @@
     let listing = false;
 
     const makeOffer = async () => {
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             try {
                 price = parseFloat(price);
             } catch (e) {

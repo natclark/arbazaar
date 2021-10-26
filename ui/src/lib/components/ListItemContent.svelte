@@ -13,7 +13,7 @@
     let listing = false;
 
     const listItem = async () => {
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             try {
                 price = parseFloat(price);
             } catch (e) {

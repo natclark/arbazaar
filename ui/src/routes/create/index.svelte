@@ -32,6 +32,7 @@
             arguments: [addressArbazaar, collection, symbol],
         }).send({
             from: $selectedAccount,
+            gasPrice: $web3.utils.toWei(`1.2`, `Gwei`),
         }).once(`error`, () => {
             // TODO
         }).once(`transactionHash`, () => {
@@ -42,6 +43,7 @@
 
             contractTemplateNFT.methods.createToken(urlMetadata).send({
                 from: $selectedAccount,
+                gasPrice: $web3.utils.toWei(`1.2`, `Gwei`),
             }).once(`error`, () => {
                 // TODO
             }).once(`transactionHash`, () => {
@@ -57,6 +59,7 @@
         
                     contractArbazaar.methods.addListing(contractTemplateNFT.options.address, tokenId, wei).send({
                         from: $selectedAccount,
+                        gasPrice: $web3.utils.toWei(`1.2`, `Gwei`),
                     }).once(`error`, (error) => {
                         // TODO
                     }).once(`transactionHash`, () => {
@@ -76,7 +79,7 @@
     const create = async () => {
         if (files === null || collection === null || symbol === null || name === null || description === null) return;
         if (!!checked && price === null) return;
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             if (stage === 0) {
                 stage = 1;
                 try {
@@ -181,7 +184,7 @@
         {/if}
 
         <button class="primary" type="submit">
-            {#if !!$connected}
+            {#if $selectedAccount !== null}
                 {#if stage === 1}
                     Creating Metadata...
                 {:else if stage === 2}

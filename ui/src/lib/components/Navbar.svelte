@@ -61,6 +61,7 @@
                 <!--
                     <a href="/bridge/" draggable="false" aria-current="{$page.path === `/bridge/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Bridge</a>
                 -->
+                <a href="/listings/" draggable="false" aria-current="{$page.path === `/listings/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Listings</a>
                 <a href="/create/" draggable="false" aria-current="{$page.path === `/create/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Create</a>
                 <a href="/stake/" draggable="false" aria-current="{$page.path === `/stake/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Stake</a>
                 {#if $wallet !== ``}
@@ -78,6 +79,7 @@
             <!--
                 <a href="/bridge/" draggable="false" aria-current="{$page.path === `/bridge/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Bridge</a>
             -->
+            <a href="/listings/" draggable="false" aria-current="{$page.path === `/listings/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Listings</a>
             <a href="/create/" draggable="false" aria-current="{$page.path === `/create/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Create</a>
             <a href="/stake/" draggable="false" aria-current="{$page.path === `/stake/` ? `page` : ``}" on:mousedown={(e) => ripple(e, doc)} on:click={(e) => ripple(e, doc)} sveltekit:prefetch>Stake</a>
             {#if $wallet !== ``}

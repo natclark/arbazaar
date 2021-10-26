@@ -13,11 +13,11 @@
 
     const removeListing = async (listingKey, seller) => {
         await defaultChainStore.setBrowserProvider();
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             if ($selectedAccount !== seller) {
                 const contractArbazaar = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
                 contractArbazaar.methods.removeListing(listingKey).send({
-                    from: $selectedAccount
+                    from: $selectedAccount,
                 }).once(`error`, () => {
                     // TODO
                 }).once(`transactionHash`, () => {
@@ -35,7 +35,7 @@
 
     const purchaseListing = async (listingKey, price) => {
         await defaultChainStore.setBrowserProvider();
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             if ($web3.utils.toWei(await $web3.eth.getBalance($selectedAccount), `ether`) >= price) {
                 const contractArbazaar = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
                 contractArbazaar.methods.purchaseListing(collection, listingKey).send({
@@ -58,7 +58,7 @@
 
     onMount(async () => {
         await defaultChainStore.setBrowserProvider();
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             const contractArbzaar = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
             listings = await contractArbzaar.methods.retrieveListingsByItem(collection, tokenId).call();
         }

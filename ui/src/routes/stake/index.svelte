@@ -20,7 +20,7 @@
     let claiming = false;
 
     const claimRewards = async () => {
-        if (!!$connected) {
+        if ($selectedAccount !== null) {
             if (rewards > 0) {
                 claiming = true;
 
