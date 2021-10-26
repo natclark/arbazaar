@@ -25,9 +25,11 @@
             const data = await marketContract.methods.retrieveListingsActive().call();
             console.log(data);
             listings = await Promise.all(data.map(async (e) => {
+                const listingIndex = collections.indexOf(collections.find((f) => f.address === e.collection));
+                const collection = listingIndex !== -1 ? collections[listingIndex].name : `Unknown Collection`;
                 const price = $web3.utils.fromWei(e.price, `ether`);
                 let item = {
-                    collection: `Unknown Collection`,
+                    collection,
                     id: parseInt(e.tokenId),
                     addressCollection: e.collection,
                     sold: e.sold,

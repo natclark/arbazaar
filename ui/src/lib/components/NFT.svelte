@@ -1,6 +1,9 @@
 <script>
     import { onMount } from 'svelte';
     import { SkeletonText, SkeletonBlock, SkeletonImage, SkeletonAvatar } from 'skeleton-elements/svelte';
+    import { defaultChainStore, web3, selectedAccount, connected, chainId, chainData } from 'svelte-web3';
+    import Arbazaar from '$lib/abi/Arbazaar.json';
+    import { addressTemplateNFT, addressArbazaar } from '../../../config';
 
     export let collection;
     export let id;
@@ -12,6 +15,9 @@
     let image = ``;
     let imageBlob = new Image();
     let imageLoaded = false;
+
+    let listings = [];
+    let price = null;
 
     onMount(async () => {
         /* A more reliable and decentralized solution for fetching data is a high-priority upcoming feature. */
@@ -41,6 +47,26 @@
                     imageLoaded = true;
                 };
                 imageBlob.src = image;
+
+                $selectedAccount !== null && (await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`));
+                const marketContract = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
+                const dataListings = await marketContract.methods.retrieveListingsByItem(addressCollection, id).call();
+                console.log(dataListings);
+                listings = await Promise.all(dataListings.map(async (e) => {
+                    const price = $web3.utils.fromWei(e.price, `ether`);
+                    let item = {
+                        collection: `Unknown Collection`,
+                        id: parseInt(e.tokenId),
+                        addressCollection: e.collection,
+                        sold: e.sold,
+                        price,
+                    };
+                    return item;
+                }));
+
+                listings = listings; // Svelte glitch
+
+                listings.length > 0 && (price = listings[listings.length - 1].price);
             } catch (e) {
                 // TODO
                 console.log(jsonMetadata);
@@ -75,11 +101,10 @@
             {/if}
         </div>
         <div>
-            <!--
-                TODO
-            <p class="nft__price"><img class="eth eth--small" src="/img/ethereum-logo.png" alt="Ξ" loading="lazy"> 0.1</p>
-            <p class="nft__last"><img class="eth eth--small" src="/img/ethereum-logo.png" alt="Ξ" loading="lazy"> 0.05</p>
-            -->
+            {#if price !== null}
+                <p class="nft__price"><img class="eth eth--small" src="/img/ethereum-logo.png" alt="Ξ" loading="lazy"> {price}</p>
+            {/if}
+            <!--<p class="nft__last"><img class="eth eth--small" src="/img/ethereum-logo.png" alt="Ξ" loading="lazy"> 0.05</p>-->
         </div>
     </div>
 </a>
@@ -137,7 +162,15 @@
                     }
                     &.nft__price, &.nft__last {
                         font-size: 13px;
-                        font-weight: 700;
+                        font-weight: 500;
+                    }
+                    &.nft__price {
+                        align-items: center;
+                        column-gap: 6px;
+                        display: flex;
+                        img {
+                            margin-bottom: 1px;
+                        }
                     }
                 }
                 &:last-child {
