@@ -1,4 +1,9 @@
 export default [
+    {
+        address: `0xE29B70C77E22979d6b7d2ce2a606fAD431BdEf1C`,
+        logo: ``,
+        name: `ArbiPenguins`,
+    },
     /*
     {
         address: `0xa664af3dd61dfde9cd3f65f9ebc43e493f120f2c`,

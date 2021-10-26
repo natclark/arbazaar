@@ -55,6 +55,7 @@
             const metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/nft_metadata/0/?key=${COVALENT_KEY}`);
             const jsonMetadata = await metadata.json();
             if (jsonMetadata.error === false) {
+                console.log(jsonMetadata);
                 const data = jsonMetadata.data.items[0].nft_data[0];
                 console.log(data);
                 banner = data.external_data.image;
