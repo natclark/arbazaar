@@ -32,7 +32,7 @@
                     // TODO
                 });
             } else {
-                Sawl.fire(`The price must be greater than 0.001 ETH!`);
+                Swal.fire(`The price must be greater than 0.001 ETH!`);
             }
         } else {
             Swal.fire(`Please connect your wallet first!`);
