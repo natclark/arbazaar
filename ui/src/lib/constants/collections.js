@@ -4,13 +4,6 @@ export default [
         logo: ``,
         name: `ArbiPenguins`,
     },
-    /*
-    {
-        address: `0xa664af3dd61dfde9cd3f65f9ebc43e493f120f2c`,
-        logo: ``,
-        name: `Crayonart`,
-    },
-    */
     {
         address: `0x71f5C328241fC3e03A8c79eDCD510037802D369c`,
         logo: ``,
@@ -53,11 +46,19 @@ export default [
         logo: ``,
         name: `Arbi Degen Apes`,
     },
-    /*
+    {
+        address: `0xa664af3dd61dfde9cd3f65f9ebc43e493f120f2c`,
+        logo: ``,
+        name: `Crayonart`,
+    },
+    {
+        address: `0xed6BF8C45e7d84d5aa3d1aAB5E33892e043E2280`,
+        logo: ``,
+        name: `Crayonart`,
+    },
     {
         address: `0x1c93D3C29E6bEF2a2eF34FBE7C23d523c174d566`,
         logo: ``,
         name: `Alaskascape`,
     }
-    */
 ];
