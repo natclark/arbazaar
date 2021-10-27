@@ -40,7 +40,9 @@
     };
 
     onMount(async () => {
-        await defaultChainStore.setBrowserProvider();
+        if ($selectedAccount === null) {
+            await defaultChainStore.setBrowserProvider();
+        }
     });
 </script>
 

@@ -36,10 +36,14 @@
     const effect = `wave`;
 
     const load = async () => {
-        await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
-        const contract = new $web3.eth.Contract(ERC721.abi, addressCollection);
-        contract.methods.name().call().then((result) => collection = result);
-        contract.methods.totalSupply().call().then((result) => supply = result);
+        $selectedAccount === null && (await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`));
+        const contract = await new $web3.eth.Contract(ERC721.abi, addressCollection);
+        contract.methods.name().call()
+            .then((result) => collection = result)
+            .catch((e) => {});
+        contract.methods.totalSupply().call()
+            .then((result) => supply = result)
+            .catch((e) => {});
         const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_token_ids/?key=${COVALENT_KEY}`);
         const jsonItems = await items.json();
         if (jsonItems.error === false) {
@@ -65,7 +69,9 @@
                 creator = data.original_owner;
                 owner = data.owner;
                 addressOwner = data.owner_address;
+                console.log(data.external_data.attributes);
                 properties = data.external_data.attributes;
+                properties = properties; // Svelte glitch
             } catch (e) {
                 console.log(`ERROR`);
             }
@@ -87,9 +93,11 @@
         } catch (e) {
             //goto(`/`);
         }
+        /*
         if (collections.includes(addressCollection) === false) {
             //goto(`/`);
         }
+        */
     });
 </script>
 

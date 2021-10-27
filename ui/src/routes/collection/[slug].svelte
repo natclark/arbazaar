@@ -35,7 +35,7 @@
     const firstLoad = () => {
         return new Promise(async (resolve, reject) => {
             await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
-            const contract = new $web3.eth.Contract(ERC721.abi, address);
+            const contract = await new $web3.eth.Contract(ERC721.abi, address);
             contract.methods.name().call().then((result) => {
                 name = result;
                 contract.methods.totalSupply().call().then((result) => {

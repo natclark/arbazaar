@@ -56,10 +56,11 @@
     };
 
     onMount(async () => {
-        await defaultChainStore.setBrowserProvider();
+        await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
         if ($selectedAccount !== null) {
             const contractArbzaar = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
             offers = await contractArbzaar.methods.retrieveOffersByItem(collection, tokenId).call();
+            offers = offers; // Svelte glitch
         }
     });
 </script>
