@@ -1,6 +1,5 @@
 <script>
     import { onMount } from 'svelte';
-    import { SkeletonText, SkeletonBlock, SkeletonImage, SkeletonAvatar } from 'skeleton-elements/svelte';
     import { defaultChainStore, web3, selectedAccount, connected, chainId, chainData } from 'svelte-web3';
     import Arbazaar from '$lib/abi/Arbazaar.json';
     import { addressTemplateNFT, addressArbazaar } from '../../../config';
@@ -84,7 +83,12 @@
 <a class="nft" href="/assets/{addressCollection}/{id}/">
     <div class="nft__thumbnail">
         {#if imageLoaded === false}
-            <SkeletonImage {effect} height={312} width={312} borderRadius="16px 16px 0 0" />
+            <span class="skeleton-image skeleton-effect-wave">
+                <svg width="312" height="312" viewBox="0 0 312 312" preserveAspectRatio="none" style="border-radius: 16px 16px 0 0">
+                    <polygon fillrule="evenodd" points="0 0 312 0 312 312 0 312"></polygon>
+                    <path d="M99,216 L213,216 C226,216 233,209 233,196 L233,116 C233,103 226,96 213,96 L99,96 C86,96 79,103 79,116 L79,196 C79,209 86,216 99,216 Z M187,156 C184,153 181,152 178,152 C174,152 171,153 168,156 L138,182 L126,171 C123,169 121,167 117,167 C115,167 112,169 109,171 L90,189 L90,117 C90,110 93,106 100,106 L212,106 C219,106 222,110 222,117 L222,189 L187,156 Z M128,157 C136,157 143,150 143,141 C143,133 136,126 128,126 C119,126 112,133 112,141 C112,150 119,157 128,157 Z"></path>
+                </svg>
+            </span>
         {:else}
             <img src={image} alt={name} loading="lazy">
         {/if}
@@ -97,9 +101,7 @@
                 </a>
             </p>
             {#if name === ``}
-                <SkeletonText {effect} tag="p" class="nft__name">
-                    Item Name
-                </SkeletonText>
+            <p class="skeleton-text skeleton-effect-wave nft__name">Item Name</p>
             {:else}
                 <p class="nft__name">{name}</p>
             {/if}

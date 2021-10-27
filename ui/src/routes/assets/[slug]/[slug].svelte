@@ -5,7 +5,6 @@
     import { goto } from '$app/navigation';
     import ERC721 from '$lib/abi/ERC721';
     import { defaultChainStore, web3, selectedAccount, connected, chainId, chainData } from 'svelte-web3';
-    import { SkeletonText, SkeletonBlock, SkeletonImage, SkeletonAvatar } from 'skeleton-elements/svelte';
     import wallet from '$lib/stores/wallet';
     import Copy from '$lib/components/Copy.svelte';
     import Grid from '$lib/components/Grid.svelte';
@@ -101,7 +100,12 @@
 <div class="flex flex--main">
     <section class="left">
         {#if image === ``}
-            <SkeletonImage {effect} height={500} width={500} borderRadius="16px" />
+            <span class="skeleton-image skeleton-effect-wave">
+                <svg width="500" height="500" viewBox="0 0 500 500" preserveAspectRatio="none" style="border-radius: 16px">
+                    <polygon fillrule="evenodd" points="0 0 500 0 500 500 0 500"></polygon>
+                    <path d="M159,346 L341,346 C362,346 373,335 373,314 L373,186 C373,165 362,154 341,154 L159,154 C138,154 127,164 127,186 L127,314 C127,336 138,346 159,346 Z M300,250 C296,246 290,243 285,243 C279,243 274,245 269,250 L222,292 L202,274 C198,270 193,268 188,268 C184,268 179,270 175,274 L143,302 L143,187 C143,176 149,171 160,171 L340,171 C351,171 357,176 357,187 L357,302 L300,250 Z M205,251 C218,251 229,240 229,226 C229,213 218,202 205,202 C191,202 180,213 180,226 C180,240 191,251 205,251 Z"></path>
+                </svg>
+            </span>
         {:else}
             <img class="image" src={image} alt="{name} Logo" loading="lazy">
         {/if}

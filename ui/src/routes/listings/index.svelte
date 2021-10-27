@@ -6,7 +6,6 @@
     import { defaultChainStore, web3, selectedAccount, connected, chainId, chainData } from 'svelte-web3';
     import Arbazaar from '$lib/abi/Arbazaar.json';
     import { addressTemplateNFT, addressArbazaar } from '../../../config';
-    import { SkeletonText, SkeletonBlock, SkeletonImage, SkeletonAvatar } from 'skeleton-elements/svelte';
     import Copy from '$lib/components/Copy.svelte';
     import Grid from '$lib/components/Grid.svelte';
     import NFT from '$lib/components/NFT.svelte';
