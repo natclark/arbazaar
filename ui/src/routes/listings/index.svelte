@@ -60,7 +60,7 @@
             />
         {/each}
         {#if loading === false}
-            <InfiniteLoading on:infinite={infiniteHandler} />
+            <InfiniteLoading spinner="circles" on:infinite={infiniteHandler} />
         {/if}
     </Grid>
 {:else}

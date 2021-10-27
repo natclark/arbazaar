@@ -58,6 +58,6 @@
         />
     {/each}
     <!--
-    <InfiniteLoading on:infinite={infiniteHandler} />
+    <InfiniteLoading spinner="circles" on:infinite={infiniteHandler} />
     -->
 </Grid>
