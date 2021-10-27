@@ -6,6 +6,8 @@
 </script>
 
 <script>
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
     import Navbar from '$lib/components/Navbar.svelte';
     import Alert from '$lib/components/Alert.svelte';
     import Wrapper from '$lib/components/Wrapper.svelte';
@@ -13,6 +15,12 @@
     import '$lib/global.scss';
     import 'skeleton-elements/skeleton-elements.css';
     import '@sweetalert2/theme-dark/dark.css';
+
+    onMount(() => {
+        (window.location.href.includes(`/assets/`)) && (goto(window.location.href));
+        (window.location.href.includes(`/collection/`)) && (goto(window.location.href));
+        (window.location.href.includes(`/accounts/`)) && (goto(window.location.href));
+    });
 </script>
 
 <Navbar />
