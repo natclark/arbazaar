@@ -70,6 +70,9 @@
 {/if}
 
 <style>
+    h1 {
+        margin-bottom: 16px;
+    }
     .image {
         border-radius: 50%;
         height: 128px;

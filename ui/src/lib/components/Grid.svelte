@@ -11,7 +11,7 @@
     .grid {
         display: grid;
         gap: 20px;
-        grid-template-columns: repeat(auto-fit, minmax(312px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(312px, min-content));
         left: 5vw;
         position: absolute;
         right: 5vw;
@@ -19,6 +19,7 @@
         &.grid--small {
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             left: 0;
+            margin-top: 0;
             position: static;
             right: 0;
             width: 100%;
