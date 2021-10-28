@@ -63,6 +63,10 @@
                     } else {
                         image = `https://cloudflare-ipfs.com/ipfs/${image}`;
                     }
+                } else {
+                    if (!!image.startsWith(`https://cloudflare-ipfs.com/ipfs/`) && !!image.endsWith(`.mp4`)) {
+                        image = `https://gateway.ipfs.io/ipfs/${image.replace(`https://cloudflare-ipfs.com/ipfs/`, ``)}`;
+                    }
                 }
                 name = data.external_data.name;
                 description = data.external_data.description;
@@ -115,7 +119,13 @@
                 </svg>
             </span>
         {:else}
-            <img class="image" src={image} alt="{name} Logo" loading="lazy">
+            {#if image.endsWith(`mp4`) === false}
+                <img class="image" src={image} alt="{name} Logo" loading="lazy">
+            {:else}
+                <video class="image" autoplay loop>
+                    <source src={image} type="video/mp4">
+                </video>
+            {/if}
         {/if}
         <h2>Description</h2>
         <p class="creators">
