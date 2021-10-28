@@ -69,9 +69,9 @@
                 creator = data.original_owner;
                 owner = data.owner;
                 addressOwner = data.owner_address;
-                console.log(data.external_data.attributes);
-                properties = data.external_data.attributes;
-                properties = properties; // Svelte glitch
+                if (data.external_data.attributes !== null) {
+                    properties = data.external_data.attributes;
+                }
             } catch (e) {
                 console.log(`ERROR`);
             }
