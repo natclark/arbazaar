@@ -57,12 +57,12 @@
     };
 
     onMount(async () => {
-        await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
-        if ($selectedAccount !== null) {
-            const contractArbzaar = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
-            listings = await contractArbzaar.methods.retrieveListingsByItem(collection, tokenId).call();
-            listings = listings; // Svelte glitch
+        if ($selectedAccount === null) {
+            await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
         }
+        const contractArbzaar = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
+        listings = await contractArbzaar.methods.retrieveListingsByItem(collection, tokenId).call();
+        listings = listings; // Svelte glitch
     });
 </script>
 
