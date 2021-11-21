@@ -130,12 +130,14 @@
             <button class="primary primary--rect" on:click={() => screen = `mint`}>
                 Mint 1 of 1
             </button>
+            <!--
             <button class="primary primary--rect" on:click={()=> screen = `create`}>
                 Create New Collection
             </button>
             <button class="primary primary--rect" on:click={() => screen = `add`}>
                 Add To Existing Collection
             </button>
+            -->
         </div>
     </div>
 {/if}
