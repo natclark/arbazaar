@@ -10,6 +10,7 @@
     import Grid from '$lib/components/Grid.svelte';
     import NFT from '$lib/components/NFT.svelte';
     import InfiniteLoading from 'svelte-infinite-loading';
+    import { COVALENT_KEY } from '../../../config';
 
     let loading = true;
 
@@ -29,12 +30,9 @@
 
     let index = 0;
 
-    /* A more reliable and decentralized solution for fetching data is a high-priority upcoming feature. */
-    const COVALENT_KEY = `ckey_f02916bdd2b04038bc0808fb3bc`;
-
     const firstLoad = () => {
         return new Promise(async (resolve, reject) => {
-            await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
+            $selectedAccount === null && (await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`));
             const contract = await new $web3.eth.Contract(ERC721.abi, address);
             contract.methods.name().call().then((result) => {
                 name = result;
@@ -44,19 +42,19 @@
                     resolve(true);
                 });
             });
-            const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/nft_token_ids/?key=${COVALENT_KEY}`);
+            const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/nft_token_ids/?key=${COVALENT_KEY()}`);
             const jsonItems = await items.json();
             if (jsonItems.error === false) {
                 updatedAt = jsonItems.data.updated_at;
             } else {
-                console.log(`ERROR`);
+                // todo debug
             }
-            const metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/nft_metadata/0/?key=${COVALENT_KEY}`);
+            const metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/nft_metadata/0/?key=${COVALENT_KEY()}`);
             const jsonMetadata = await metadata.json();
             if (jsonMetadata.error === false) {
-                console.log(jsonMetadata);
+                // todo debug
                 const data = jsonMetadata.data.items[0].nft_data[0];
-                console.log(data);
+                // todo debug
                 banner = data.external_data.image;
                 if (banner.includes(`http`) === false) {
                     banner = `https://cloudflare-ipfs.com/ipfs/${image}`;
@@ -67,14 +65,14 @@
                 }
                 description = data.external_data.description;
             } else {
-                console.log(`ERROR`);
+                // todo debug
             }
-            const holders = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/token_holders/?key=${COVALENT_KEY}`);
+            const holders = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${address}/token_holders/?key=${COVALENT_KEY()}`);
             const jsonHolders = await holders.json();
             if (jsonHolders.error === false) {
                 owners = jsonHolders.data.pagination.total_count;
             } else {
-                console.log(`ERROR`);
+                // todo debug
             }
         });
     };
@@ -82,7 +80,7 @@
     let i = 0;
 
     const load = () => {
-        console.log(`loadin`);
+        // todo debug
         return new Promise(async (resolve, reject) => {
             const nextTwelve = i + 12;
             for (i = i; i < nextTwelve; i++) {
@@ -92,7 +90,7 @@
                         id: i,
                         addressCollection: address,
                     });
-                    console.log(nfts);
+                    // todo debug
                     nfts = nfts; // Svelte glitch
                     i === nextTwelve - 1 && (resolve(true));
                 } else {
@@ -113,7 +111,7 @@
             address = $page.path.replace(`/collection/`, ``);
             address = address.replace(`/`, ``);
             index = collections.indexOf(collections.find((e) => e.address === address));
-            console.log(index);
+            // todo debug
             firstLoad()
                 .then((response) => load());
         } catch (e) {

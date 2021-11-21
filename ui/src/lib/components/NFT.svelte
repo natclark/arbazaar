@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { defaultChainStore, web3, selectedAccount, connected, chainId, chainData } from 'svelte-web3';
     import Arbazaar from '$lib/abi/Arbazaar.json';
-    import { addressTemplateNFT, addressArbazaar } from '../../../config';
+    import { addressTemplateNFT, addressArbazaar, COVALENT_KEY } from '../../../config';
 
     export let collection;
     export let id;
@@ -13,18 +13,21 @@
     let name = ``;
     let image = ``;
     let imageBlob = new Image();
-    let imageLoaded = false;
+    let mediaLoaded = false;
 
     let listings = [];
     let price = null;
 
     onMount(async () => {
         /* A more reliable and decentralized solution for fetching data is a high-priority upcoming feature. */
-        const COVALENT_KEY = `ckey_f02916bdd2b04038bc0808fb3bc`;
-        const metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_metadata/${id}/?key=${COVALENT_KEY}`);
-        const jsonMetadata = await metadata.json();
+        let metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_metadata/${id}/?key=${COVALENT_KEY()}`);
+        let jsonMetadata = await metadata.json();
         if (jsonMetadata.error === false) {
             try {
+                if (jsonMetadata.data.items[0].nft_data === null) {
+                    metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_metadata/${id}/?key=${COVALENT_KEY()}`);
+                    jsonMetadata = await metadata.json();
+                }
                 const data = jsonMetadata.data.items[0].nft_data[0];
                 name = data.external_data.name;
                 image = data.external_data.image;
@@ -35,26 +38,37 @@
                         } else {
                             image = `https://cloudflare-ipfs.com/ipfs/${image}`;
                         }
+                    } else if (!!image.endsWith(`.mp4`) && !!image.includes(`https://cloudflare-ipfs.com/`)) {
+                        image = image.replace(`https://cloudflare-ipfs.com/`, `https://gateway.ipfs.io/`);
                     }
                 } else {
                     // TODO
-                    const blb = new Blob([image], { type: `text/plain`, });
+                    const blb = new Blob([image], {
+                        type: `text/plain`,
+                    });
                     const reader = new FileReader();
                     reader.addEventListener(`loadend`, (e) => {
                         const text = e.srcElement.result;
-                        console.log(text);
+                        // todo debug
                     });
                     image = reader.readAsText(blb);
                 }
-                imageBlob.onload = () => {
-                    imageLoaded = true;
-                };
-                imageBlob.src = image;
+                if ((typeof image === `string` && !!image.endsWith(`.mp4`)) === false) {
+                    imageBlob.onload = () => {
+                        mediaLoaded = true;
+                    };
+                    imageBlob.src = image;
+                } else if (typeof image !== `string`) {
+                    // TODO
+                    mediaLoaded = true;
+                } else {
+                    mediaLoaded = true;
+                }
 
-                $selectedAccount !== null && (await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`));
+                $selectedAccount === null && (await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`));
                 const marketContract = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
                 const dataListings = await marketContract.methods.retrieveListingsByItem(addressCollection, id).call();
-                console.log(dataListings);
+                // todo debug
                 listings = await Promise.all(dataListings.map(async (e) => {
                     const price = $web3.utils.fromWei(e.price, `ether`);
                     let item = {
@@ -72,17 +86,17 @@
                 listings.length > 0 && (price = listings[listings.length - 1].price);
             } catch (e) {
                 // TODO
-                console.log(jsonMetadata);
+                // todo debug
             }
         } else {
-            console.log(`ERROR`);
+            // TODO handle
         }
     });
 </script>
 
 <a class="nft" href="/assets/{addressCollection}/{id}/">
     <div class="nft__thumbnail">
-        {#if imageLoaded === false}
+        {#if mediaLoaded === false}
             <span class="skeleton-image skeleton-effect-wave">
                 <svg width="312" height="312" viewBox="0 0 312 312" preserveAspectRatio="none" style="border-radius: 16px 16px 0 0">
                     <polygon fillrule="evenodd" points="0 0 312 0 312 312 0 312"></polygon>
@@ -90,7 +104,15 @@
                 </svg>
             </span>
         {:else}
-            <img src={image} alt={name} loading="lazy">
+            {#if typeof image === `string` && image.endsWith(`mp4`) === false}
+                <img class="image" src={image} alt="{name} Logo" loading="lazy">
+            {:else if typeof image !== `string`}
+                SVG NFTs are a WIP
+            {:else}
+                <video class="image" autoplay loop>
+                    <source src={image} type="video/mp4">
+                </video>
+            {/if}
         {/if}
     </div>
     <div class="nft__details">
@@ -101,7 +123,7 @@
                 </a>
             </p>
             {#if name === ``}
-            <p class="skeleton-text skeleton-effect-wave nft__name">Item Name</p>
+                <p class="skeleton-text skeleton-effect-wave nft__name">Item Name</p>
             {:else}
                 <p class="nft__name">{name}</p>
             {/if}
@@ -134,7 +156,7 @@
             border-radius: 20px 20px 0 0;
             height: 312px;
             margin: 0;
-            img {
+            img, video {
                 background-color: #ddd;
                 border-radius: 16px 16px 0 0;
                 height: 312px;

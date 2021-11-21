@@ -122,24 +122,25 @@
 </svelte:head>
 
 <h1>Create an NFT on Arbitrum</h1>
-<p class="subtitle">This portal offers a quick and simple way to start tokenizing, sharing, and selling your creations as digital assets on Arbitrum.</p>
+<p class="subtitle">This portal offers a quick and simple way to start tokenizing, sharing, and selling your creations as digital assets on Arbitrum.<br><strong>Further improvements are on the way.</strong></p>
 
 {#if screen === `choose`}
     <div class="flex flex--row flex--center">
         <div class="flex flex--center">
-            <button class="primary primary--rect" on:click={() => screen = `create`}>
+            <button class="primary primary--rect" on:click={() => screen = `mint`}>
+                Mint 1 of 1
+            </button>
+            <button class="primary primary--rect" on:click={()=> screen = `create`}>
                 Create New Collection
             </button>
-            <!--
             <button class="primary primary--rect" on:click={() => screen = `add`}>
                 Add To Existing Collection
             </button>
-            -->
         </div>
     </div>
 {/if}
 
-{#if screen === `create`}
+{#if screen === `mint`}
     <p>
         <a class="back" role="button" on:click={() => screen = `choose`}>&#8592; Go Back</a>
     </p>
@@ -211,10 +212,19 @@
         <br>
         <strong>WARNING: This process will improve in the future, but be prepared to pay gas for 2-3 transactions, back-to-back. We do not charge additional minting fees.</strong>
     </p>
-{/if}
-
-<!--
-{#if screen === `add`}
+{:else if screen === `create`}
+    <p>
+        <a class="back" role="button" on:click={()=> screen = `choose`}>&#8592; Go Back</a>
+    </p>
+    <h2 class="text-center">My Collections</h2>
+    <div class="flex flex--row flex--center">
+        <div class="flex flex--center">
+            <button class="primary primary--rect" on:click={connectWallet}>
+                Connect Wallet
+            </button>
+        </div>
+    </div>
+{:else if screen === `add`}
     <p>
         <a class="back" role="button" on:click={()=> screen = `choose`}>&#8592; Go Back</a>
     </p>
@@ -227,7 +237,7 @@
         </div>
     </div>
 {/if}
--->
+
 
 <style>
     h2:not(.text-center), h3, h4, h5, h6, p:not(.subtitle) {

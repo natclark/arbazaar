@@ -4,18 +4,16 @@
     import Grid from '$lib/components/Grid.svelte';
     import NFT from '$lib/components/NFT.svelte';
     import InfiniteLoading from 'svelte-infinite-loading';
+    import { COVALENT_KEY } from '../../../config';
 
     let nfts = [];
 
     const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
-    /* A more reliable and decentralized solution for fetching data is a high-priority upcoming feature. */
-    const COVALENT_KEY = `ckey_f02916bdd2b04038bc0808fb3bc`;
-
     const load = () => {
         return new Promise(async (resolve, reject) => {
             for (let i = 0; i < collections.length; i++) {
-                const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${collections[i].address}/nft_token_ids/?key=${COVALENT_KEY}`);
+                const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${collections[i].address}/nft_token_ids/?key=${COVALENT_KEY()}`);
                 const jsonItems = await items.json();
                 if (jsonItems.error === false) {
                     nfts.push({
@@ -26,7 +24,7 @@
                     nfts = nfts; // Svelte glitch
                     i === collections.length - 1 && (resolve(true));
                 } else {
-                    console.log(`ERROR`);
+                    // todo handle error
                     resolve(false);
                 }
             };

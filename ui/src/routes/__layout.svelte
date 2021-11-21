@@ -27,7 +27,9 @@
 
 <Wrapper>
     <div class="content">
+        <!--
         <Alert />
+        -->
         <slot />
     </div>
 </Wrapper>

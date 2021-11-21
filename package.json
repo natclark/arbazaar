@@ -7,11 +7,11 @@
     "private": "true",
     "scripts": {
         "preinstall": "npx only-allow pnpm",
-        "contracts:build": "cd protocol && npx hardhat compile",
-        "contracts:dev": "cd protocol && npx hardhat node",
-        "contracts:mainnet": "cd protocol && npx hardhat --network mainnet deploy",
-        "contracts:kovan": "cd protocol && npx hardhat --network kovan deploy",
-        "contracts:arbitrum": "cd protocol && npx hardhat --network arbitrum deploy",
+        "protocol:node": "cd protocol && npx hardhat node --network hardhat",
+        "protocol:build": "cd protocol && npx hardhat compile",
+        "protocol:dev": "cd protocol && npx hardhat --network localhost deploy --watch",
+        "protocol:rinkeby": "cd protocol && npx hardhat --network rinkeby deploy",
+        "protocol:one": "cd protocol && npx hardhat --network mainnet deploy",
         "ui:build": "cd ui && pnpm run prepare && npx svelte-kit build",
         "ui:dev": "cd ui && npx svelte-kit dev",
         "ui:preview": "cd ui && npx svelte-kit preview"

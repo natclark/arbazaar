@@ -9,7 +9,9 @@
         navigator.clipboard.writeText(text).then(() => {
             className = `tooltip__text tooltip__text--visible`;
             setTimeout(() => className = `tooltip__text`, 1000);
-        }).catch((e) => console.log(`Failed to copy text.`));
+        }).catch((e) => {
+            // TODO handle
+        });
     };
 </script>
 

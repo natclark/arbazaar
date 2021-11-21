@@ -6,10 +6,11 @@
     <br>
     <div class="flex flex--center">
         <div>
-            <h1><span class="bold">Arbazaar</span><br>Arbitrum's NFT Marketplace</h1>
+            <h1><span class="bold gradient">Arbazaar</span><br>Arbitrum's NFT Marketplace</h1>
             <p>Arbazaar is the Arbitrum community's go-to NFT marketplace.</p>
             <div class="flex flex--center">
-                <a class="primary" href="/assets/" draggable="false" sveltekit:prefetch>Browse Items</a>
+                <a class="primary" href="/assets/" draggable="false" sveltekit:prefetch>Browse</a>
+                <a class="primary" href="/create/" draggable="false" sveltekit:prefetch>Create</a>
             </div>
         </div>
     </div>
@@ -20,7 +21,6 @@
         h1 {
             text-shadow: 0 0 80px #888, 0 0 16px var(--fg-header);
             .bold {
-                color: var(--ac-light);
                 font-size: 64px;
             }
         }

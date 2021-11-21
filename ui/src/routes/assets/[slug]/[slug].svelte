@@ -16,9 +16,7 @@
     import PriceHistory from '$lib/components/PriceHistory.svelte';
     import TradingHistory from '$lib/components/TradingHistory.svelte';
     import MoreItems from '$lib/components/MoreItems.svelte';
-
-    /* A more reliable and decentralized solution for fetching data is a high-priority upcoming feature. */
-    const COVALENT_KEY = `ckey_f02916bdd2b04038bc0808fb3bc`;
+    import { COVALENT_KEY } from '../../../../config';
 
     let addressCollection = ``;
     let id = 0;
@@ -44,14 +42,14 @@
         contract.methods.totalSupply().call()
             .then((result) => supply = result)
             .catch((e) => {});
-        const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_token_ids/?key=${COVALENT_KEY}`);
+        const items = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_token_ids/?key=${COVALENT_KEY()}`);
         const jsonItems = await items.json();
         if (jsonItems.error === false) {
             updatedAt = jsonItems.data.updated_at;
         } else {
-            console.log(`ERROR`);
+            // todo handle error
         }
-        const metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_metadata/${id}/?key=${COVALENT_KEY}`);
+        const metadata = await fetch(`https://api.covalenthq.com/v1/42161/tokens/${addressCollection}/nft_metadata/${id}/?key=${COVALENT_KEY()}`);
         const jsonMetadata = await metadata.json();
         if (jsonMetadata.error === false) {
             try {
@@ -77,10 +75,10 @@
                     properties = data.external_data.attributes;
                 }
             } catch (e) {
-                console.log(`ERROR`);
+                // todo handle error
             }
         } else {
-            console.log(`ERROR`);
+            // todo handle error
         }
     };
 

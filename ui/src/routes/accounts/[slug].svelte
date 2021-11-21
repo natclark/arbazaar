@@ -5,7 +5,7 @@
     import { goto } from '$app/navigation';
     import { defaultChainStore, web3, selectedAccount, connected, chainId, chainData } from 'svelte-web3';
     import Arbazaar from '$lib/abi/Arbazaar.json';
-    import { addressTemplateNFT, addressArbazaar } from '../../../config';
+    import { addressTemplateNFT, addressArbazaar, COVALENT_KEY } from '../../../config';
     import Copy from '$lib/components/Copy.svelte';
     import Grid from '$lib/components/Grid.svelte';
     import NFT from '$lib/components/NFT.svelte';
@@ -22,9 +22,6 @@
 
     let index = 0;
 
-    /* A more reliable and decentralized solution for fetching data is a high-priority upcoming feature. */
-    const COVALENT_KEY = `ckey_f02916bdd2b04038bc0808fb3bc`;
-
     let i = 0;
 
     const load = async () => {
@@ -33,7 +30,7 @@
             await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
             const marketContract = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
             const data = await marketContract.methods.retrieveListingsByAccount(address).call();
-            console.log(data);
+            // todo debug
             listings = await Promise.all(data.map(async (e) => {
                 const price = $web3.utils.fromWei(e.price, `ether`);
                 let item = {
@@ -50,7 +47,7 @@
             listings = listings.filter((e) => !e.sold);
 
             /* Get current NFTs */
-            const items = await fetch(`https://api.covalenthq.com/v1/42161/address/${address}/balances_v2/?key=${COVALENT_KEY}&nft=true&no-nft-fetch=true`);
+            const items = await fetch(`https://api.covalenthq.com/v1/42161/address/${address}/balances_v2/?key=${COVALENT_KEY()}&nft=true&no-nft-fetch=true`);
             const jsonItems = await items.json();
             if (jsonItems.error === false) {
                 jsonItems.data.items.forEach((item) => {
@@ -68,10 +65,10 @@
                     }
                 });
             } else {
-                console.log(`ERROR`);
+                // todo handle error
             }
         } catch (e) {
-            console.log(`ERROR: `, e.message);
+            // todo handle error
         }
     };
 

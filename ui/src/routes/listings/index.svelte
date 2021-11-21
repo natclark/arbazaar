@@ -13,7 +13,7 @@
 
     let loading = true;
 
-    let listings = [];
+    let listings = [null];
 
     const effect = `wave`;
 
@@ -22,7 +22,7 @@
             await defaultChainStore.setProvider(`https://arb1.arbitrum.io/rpc`);
             const marketContract = await new $web3.eth.Contract(Arbazaar.abi, addressArbazaar);
             const data = await marketContract.methods.retrieveListingsActive().call();
-            console.log(data);
+            // todo debug
             listings = await Promise.all(data.map(async (e) => {
                 const listingIndex = collections.indexOf(collections.find((f) => f.address === e.collection));
                 const collection = listingIndex !== -1 ? collections[listingIndex].name : `Unknown Collection`;
@@ -39,7 +39,7 @@
 
             listings = listings; // Svelte glitch
         } catch (e) {
-            console.log(`ERROR: `, e.message);
+            // todo debug
         }
     });
 </script>
@@ -50,22 +50,24 @@
 
 <h1>Active Arbazaar Listings</h1>
 
-{#if listings.length > 0}
-    <Grid fullbleed="true">
-        {#each listings as nft}
-            <NFT
-                collection={nft.collection}
-                id={nft.id}
-                addressCollection={nft.addressCollection}
-            />
-        {/each}
-        {#if loading === false}
-            <InfiniteLoading spinner="circles" on:infinite={infiniteHandler} />
-        {/if}
-    </Grid>
-{:else}
-    <p>Looks like there aren't any listings right now!</p>
-    <p>We've just launched, so hang in there...</p>
+{#if listings[0] !== null}
+    {#if listings.length > 0}
+        <Grid fullbleed="true">
+            {#each listings as nft}
+                <NFT
+                    collection={nft.collection}
+                    id={nft.id}
+                    addressCollection={nft.addressCollection}
+                />
+            {/each}
+            {#if loading === false}
+                <InfiniteLoading spinner="circles" on:infinite={infiniteHandler} />
+            {/if}
+        </Grid>
+    {:else}
+        <p>Looks like there aren't any listings right now!</p>
+        <p>We've just launched, so hang in there...</p>
+    {/if}
 {/if}
 
 <style>

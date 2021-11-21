@@ -24,7 +24,7 @@
     <div class="left">
         <a class="logo" href="/" title="Home" draggable="false" aria-current="{$page.path === `/` ? `page` : ``}" sveltekit:prefetch>
             <img draggable="false" src="/img/arbucks-logo.svg" alt="Arbucks Logo" width="40px" height="40px">
-            &nbsp; Arbazaar
+            <span>&nbsp; Arbazaar</span>
         </a>
     </div>
     <div class="center">
@@ -43,12 +43,14 @@
                 </svg>
             </summary>
             <div class="menu__links">
-                <!--
-                    <a href="/bridge/" draggable="false" aria-current="{$page.path === `/bridge/` ? `page` : ``}" sveltekit:prefetch>Bridge</a>
-                -->
+                <a href="/bridge/" draggable="false" aria-current="{$page.path === `/bridge/` ? `page` : ``}" sveltekit:prefetch>Bridge</a>
                 <a href="/listings/" draggable="false" aria-current="{$page.path === `/listings/` ? `page` : ``}" sveltekit:prefetch>Listings</a>
                 <a href="/create/" draggable="false" aria-current="{$page.path === `/create/` ? `page` : ``}" sveltekit:prefetch>Create</a>
                 <a href="/stake/" draggable="false" aria-current="{$page.path === `/stake/` ? `page` : ``}" sveltekit:prefetch>Stake</a>
+                <!--
+                    TODO
+                    <a href="/docs/" draggable="false" aria-current="{$page.path === `/docs/` ? `page` : ``}" sveltekit:prefetch>Docs</a>
+                -->
                 {#if $selectedAccount !== null}
                     <a href="/accounts/{$selectedAccount}/" draggable="false" aria-current="{$page.path === `/accounts/{$selectedAccount}/` ? `page` : ``}" sveltekit:prefetch>
                         Profile
@@ -61,12 +63,14 @@
             </div>
         </details>
         <div class="menu menu--desktop">
-            <!--
-                <a href="/bridge/" draggable="false" aria-current="{$page.path === `/bridge/` ? `page` : ``}" sveltekit:prefetch>Bridge</a>
-            -->
-            <a href="/listings/" draggable="false" aria-current="{$page.path === `/listings/` ? `page` : ``}" sveltekit:prefetch>Listings</a>
+            <a href="/assets/" draggable="false" aria-current="{$page.path === `/assets/` ? `page` : ``}" sveltekit:prefetch>Browse</a>
+            <a href="/bridge/" draggable="false" aria-current="{$page.path === `/bridge/` ? `page` : ``}" sveltekit:prefetch>Bridge</a>
             <a href="/create/" draggable="false" aria-current="{$page.path === `/create/` ? `page` : ``}" sveltekit:prefetch>Create</a>
             <a href="/stake/" draggable="false" aria-current="{$page.path === `/stake/` ? `page` : ``}" sveltekit:prefetch>Stake</a>
+            <!--
+                TODO
+                <a href="/docs/" draggable="false" aria-current="{$page.path === `/docs/` ? `page` : ``}" sveltekit:prefetch>Docs</a>
+            -->
             {#if $selectedAccount !== null}
                 <a class="secondary" href="/accounts/{$selectedAccount}/" draggable="false" aria-current="{$page.path === `/accounts/{$selectedAccount}/` ? `page` : ``}" sveltekit:prefetch>
                     <svg version="1.1" height="20px" width="20px" x="0px" y="0px" viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
@@ -94,6 +98,7 @@
     nav {
         align-items: center;
         background-color: #000;
+        box-shadow: rgba(0, 0, 0, .25) 0 54px 55px, rgba(0, 0, 0, .12) 0 -12px 30px, rgba(0, 0, 0, .12) 0 4px 6px, rgba(0, 0, 0, .17) 0 12px 13px, rgba(0, 0, 0, .09) 0 -3px 5px;
         display: flex;
         height: 80px;
         justify-content: space-between;
@@ -163,11 +168,12 @@
         .left {
             a {
                 &.logo {
+                    -webkit-user-drag: none;
+                    align-items: center;
+                    display: flex;
                     height: 40px;
+                    user-select: none;
                     will-change: opacity, transform;
-                    span {
-                        font-size: 8px;
-                    }
                     &:hover {
                         opacity: .8;
                     }
